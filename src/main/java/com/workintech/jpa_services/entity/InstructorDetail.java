@@ -1,6 +1,7 @@
 package com.workintech.jpa_services.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class InstructorDetail {
 
     // Eğer hem Instructor hemde InstructorDetail içerisinde bağlarsak Bi-directional
     @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},mappedBy ="instructorDetail" )
+    @JsonIgnore
     private Instructor instructor;
 
 }

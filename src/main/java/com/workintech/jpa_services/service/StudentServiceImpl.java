@@ -1,5 +1,6 @@
 package com.workintech.jpa_services.service;
 
+import com.workintech.jpa_services.dto.StudentResponseRecord;
 import com.workintech.jpa_services.entity.Gender;
 import com.workintech.jpa_services.entity.Student;
 import com.workintech.jpa_services.repository.StudentRepository;
@@ -20,11 +21,10 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student save(Student student) {
-        if (student == null) {
-            throw new IllegalArgumentException("Student cannot be null");
-        }
-        return studentRepository.save(student);
+    public StudentResponseRecord save(Student student) {
+        Student savedStudent=studentRepository.save(student);
+        return new StudentResponseRecord(savedStudent.getId(),
+                savedStudent.getFirstName(),savedStudent.getLastName(),savedStudent.getEmail());
     }
 
     @Override

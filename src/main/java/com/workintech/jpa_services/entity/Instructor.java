@@ -1,11 +1,15 @@
 package com.workintech.jpa_services.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -37,5 +41,19 @@ public class Instructor {
     @JsonProperty("instructorDetail")
     private InstructorDetail instructorDetail;
 
+    @OneToMany(cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.PERSIST,CascadeType.MERGE},mappedBy = "instructor")
+    @JsonIgnore
+    private List<Course> courses;
+
+    public void addCourse(Course course){
+        if(courses==null){
+            courses=new ArrayList<>();
+        }
+
+        courses.add(course);
+
+    }
+
 
 }
+//Eğitmen sınıfı

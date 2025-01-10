@@ -1,9 +1,13 @@
 package com.workintech.jpa_services.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -50,19 +54,21 @@ public class Student {
     @Min(value = 2000)
     private int salary;
 
-    public String getFirstName() {
-        return firstName;
+    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE})
+    @JoinTable(name = "student_course",schema = "springweb",
+    joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "")
+    )
+    @JsonIgnore
+    private List<Course> courses;
+
+
+    public void addCourse(Course course){
+        if(courses==null){
+            courses=new ArrayList<>();
+        }
+        courses.add(course);
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }

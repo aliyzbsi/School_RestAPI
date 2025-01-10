@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class InstructorServiceImpl implements InstructorService{
 
-    private InstructorRepository instructorRepository;
+    private final InstructorRepository instructorRepository;
 
     @Autowired
     public InstructorServiceImpl(InstructorRepository instructorRepository) {
@@ -34,7 +34,7 @@ public class InstructorServiceImpl implements InstructorService{
         if(instructorOptional.isPresent()){
             return instructorOptional.get();
         }else {
-            throw new RuntimeException(id+" bulunamadı !");
+            throw new RuntimeException(id+" bulunamadı burası çalıştı !");
         }
     }
 
