@@ -38,21 +38,38 @@ API Dokümantasyonu:
 
 Örnek Endpoint Kullanımı:
 1. Yeni Öğrenci Ekleme:
+
    {
+
    "student": {
+
    "id": 0,
+
    "firstName": "string",
+
    "lastName": "string",
+
    "gender": "MALE",
+
    "email": "stringstri",
+
    "salary": 2000
+
    },
+
    "courseList": [
+
    {
+
    "title": "string",
+
    "gpa": 0,
+
    "id": 0
+
    }
+
    ]
+
    }
 
