@@ -18,12 +18,6 @@ API Dokümantasyonu:
    // POST /api/courses - Yeni ders ekle
    // PUT /api/courses/{id} - Ders bilgilerini güncelle
    // DELETE /api/courses/{id} - Ders kaydını sil
-4. Sınıf Yönetimi (Class Management)
-   // GET /api/classes - Tüm sınıfları listele
-   // GET /api/classes/{id} - ID'ye göre sınıf getir
-   // POST /api/classes - Yeni sınıf ekle
-   // PUT /api/classes/{id} - Sınıf bilgilerini güncelle
-   // DELETE /api/classes/{id} - Sınıf kaydını sil
 
 Örnek Endpoint Kullanımı:
 1. Yeni Öğrenci Ekleme:
