@@ -1,6 +1,7 @@
 package com.workintech.jpa_services.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,7 @@ public class ApplicationUser implements UserDetails {
     @JoinTable(name = "app_user_role",schema = "springweb",
             joinColumns = @JoinColumn(name = "app_user_id"),inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+
     private Set<Role> authorities=new HashSet<>();
 
     @Override

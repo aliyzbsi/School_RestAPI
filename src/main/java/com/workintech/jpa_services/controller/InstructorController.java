@@ -1,6 +1,7 @@
 package com.workintech.jpa_services.controller;
 
-import com.workintech.jpa_services.dto.CourseResponse;
+
+import com.workintech.jpa_services.dto.CourseRecord;
 import com.workintech.jpa_services.entity.Course;
 import com.workintech.jpa_services.entity.Instructor;
 import com.workintech.jpa_services.service.InstructorService;
@@ -25,11 +26,11 @@ public class InstructorController {
     }
 
     @GetMapping("courses/{id}")
-    public List<CourseResponse> findAllCourse(@PathVariable("id") Long id){
+    public List<CourseRecord> findAllCourse(@PathVariable("id") Long id){
         Instructor instructor= instructorService.findById(id);
-        List<CourseResponse> courseResponses=new ArrayList<>();
+        List<CourseRecord> courseResponses=new ArrayList<>();
         instructor.getCourses().forEach(course -> {
-            courseResponses.add(new CourseResponse(course.getTitle(),course.getGpa()));
+            courseResponses.add(new CourseRecord(course.getTitle(),course.getGpa()));
         });
         return courseResponses;
     }
@@ -45,12 +46,12 @@ public class InstructorController {
         return instructorService.save(instructor);
     }
     @PostMapping("/addCourse/{instructorId}")
-    public CourseResponse addCourse(@RequestBody Course course,@PathVariable long instructorId){
+    public CourseRecord addCourse(@RequestBody Course course,@PathVariable long instructorId){
         Instructor instructor=instructorService.findById(instructorId);
         course.setInstructor(instructor);
         instructor.addCourse(course);
         instructorService.save(instructor);
-        return new CourseResponse(course.getTitle(),course.getGpa());
+        return new CourseRecord(course.getTitle(),course.getGpa());
     }
 
     @DeleteMapping("/{id}")

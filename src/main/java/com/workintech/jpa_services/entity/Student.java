@@ -57,18 +57,42 @@ public class Student {
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE})
     @JoinTable(name = "student_course",schema = "springweb",
     joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "")
+            inverseJoinColumns = @JoinColumn(name = "courses_id")
     )
     @JsonIgnore
-    private List<Course> courses;
+    private List<Course> courses=new ArrayList<>();
 
 
     public void addCourse(Course course){
         if(courses==null){
             courses=new ArrayList<>();
         }
+        if(courses.size() >= 3) {
+            throw new RuntimeException("Bir öğrenci en fazla 3 kurs alabilir! Mevcut kurs sayısı: " + courses.size());
+        }
+
+        if(courses.contains(course)) {
+            throw new RuntimeException("Bu kurs zaten eklenmiş: " + course.getTitle());
+        }
         courses.add(course);
     }
 
+    public void removeCourse(Course course){
+        if (!courses.contains(course)){
+            throw new RuntimeException("Öğrencinin kursları arasında bu kurs bulunamadı!");
+        }
+        courses.remove(course);
+    }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", gender=" + gender +
+                ", id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", salary=" + salary +
+                '}';
+    }
 }

@@ -1,4 +1,8 @@
 package com.workintech.jpa_services.dto;
 
-public record StudentResponseRecord(long id,String firstName,String lastName,String email) {
+import com.workintech.jpa_services.entity.Course;
+
+import java.util.List;
+
+public record StudentResponseRecord(long id, String firstName, String lastName, String email, List<Course> courses) {
 }

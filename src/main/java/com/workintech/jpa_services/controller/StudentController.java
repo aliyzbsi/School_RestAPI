@@ -1,16 +1,18 @@
 package com.workintech.jpa_services.controller;
 
-import com.workintech.jpa_services.dto.StudentCourseRequest;
-import com.workintech.jpa_services.dto.StudentResponseRecord;
+import com.workintech.jpa_services.dto.*;
 import com.workintech.jpa_services.entity.Course;
 import com.workintech.jpa_services.entity.Gender;
 import com.workintech.jpa_services.entity.Instructor;
 import com.workintech.jpa_services.entity.Student;
+import com.workintech.jpa_services.service.AuthenticationService;
 import com.workintech.jpa_services.service.StudentService;
+import com.workintech.jpa_services.validations.StudentValidation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,7 @@ public class StudentController {
     @Autowired
     public StudentController(StudentService studentService){
         this.studentService=studentService;
+
     }
     @Operation(summary = "Get all students", description = "Returns a list of all students")
     @GetMapping
@@ -35,23 +38,40 @@ public class StudentController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public StudentResponseRecord save(@Validated @RequestBody StudentCourseRequest studentCourseRequest){
-            Student student=studentCourseRequest.getStudent();
-            List<Course> courses=studentCourseRequest.getCourseList();
 
-          //if(courses.get(hangi kurstan hangi öğrenci ise onun indexi).getStudents().contains(student))
-            for(Course course:courses){
-                student.addCourse(course);
 
-            }
+            return studentService.save(studentCourseRequest);
+    }
 
-            return studentService.save(student);
+    @PutMapping("/addCourse/{id}")
+    public StudentResponseRecord addCourseForStudent(@PathVariable("id") long id, @RequestBody CourseRequestDto courseRequest){
+        Student student=studentService.assignCourseForStudent(id,courseRequest.id());
+
+        return new StudentResponseRecord(student.getId(),student.getFirstName(),student.getLastName(),student.getEmail(),student.getCourses());
+    }
+    @DeleteMapping("/removeCourse/{studentId}/{courseId}")
+    public StudentResponseRecord removeCourseForStudent(
+            @PathVariable("studentId") Long studentId,
+            @PathVariable("courseId") Long courseId) {
+
+        Student student = studentService.removeCourseForStudent(studentId, courseId);
+        return new StudentResponseRecord(
+                student.getId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getEmail(),
+                student.getCourses()
+        );
     }
 
     @GetMapping("/{id}")
+
     public StudentResponseRecord findById(@Positive @PathVariable("id") Long id){
         Student student=studentService.findById(id);
-        return new StudentResponseRecord(student.getId(),student.getFirstName(),student.getLastName(),student.getEmail());
+        return new StudentResponseRecord(student.getId(),student.getFirstName(),student.getLastName(),student.getEmail(),student.getCourses());
     }
 
     @GetMapping("/search/{name}")
@@ -61,7 +81,10 @@ public class StudentController {
                 .map(student -> new StudentResponseRecord(student.getId(),
                         student.getFirstName(),
                         student.getLastName(),
-                        student.getEmail())
+                        student.getEmail(),
+                        student.getCourses()
+                        )
+
                 ).collect(Collectors.toList());
     }
 

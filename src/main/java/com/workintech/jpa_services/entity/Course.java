@@ -21,10 +21,10 @@ public class Course {
     @Column(name = "id")
     @JsonProperty("id")
     private long id;
-    @Column(name = "title")
+    @Column(name = "title",nullable = false)
     private String title;
 
-    @Column(name = "gpa")
+    @Column(name = "gpa",nullable = false)
     private double gpa;
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
@@ -34,11 +34,8 @@ public class Course {
 
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE})
     @JoinTable(name = "student_course",schema = "springweb",
-            joinColumns = @JoinColumn(name = "course_id"),
+            joinColumns = @JoinColumn(name = "courses_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     @JsonIgnore
     private List<Student> students;
-
-
-
 }
